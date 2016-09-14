@@ -1,0 +1,21 @@
+{
+  "name": "d3-scale-cluster",
+  "version": "1.0.0",
+  "description": "D3 scale that clusters data into discrete groups",
+  "repository": "schnerd/d3-scale-cluster",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "node spec/index.js"
+  },
+  "author": "David Schnurr",
+  "license": "MIT",
+  "devDependencies": {
+    "d3": "^4.2.2",
+    "eslint": "^3.5.0",
+    "eslint-config-standard": "^6.0.0",
+    "eslint-plugin-promise": "^2.0.1",
+    "eslint-plugin-standard": "^2.0.0",
+    "jasmine": "^2.5.1",
+    "jasmine-console-reporter": "^1.2.7"
+  }
+}

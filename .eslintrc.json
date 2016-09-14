@@ -1,0 +1,15 @@
+{
+  "extends": "standard",
+  "env": {
+    "browser": true,
+    "node": true,
+    "jasmine": true
+  },
+  "plugins": [
+    "standard",
+    "promise"
+  ],
+  "rules": {
+    "semi": 0
+  }
+}
