@@ -25,4 +25,4 @@ npm run build # build distributable file
 
 ###Thanks
 
-This project uses the [Ckmeans](http://simplestatistics.org/docs/#ckmeans) implementation from the [https://github.com/simple-statistics/simple-statistics](simple-statistics) library–with the original algorithm written by [http://journal.r-project.org/archive/2011-2/RJournal_2011-2_Wang+Song.pdf](Haizhou Wang and Mingzhou Song)
+This project uses the [Ckmeans](http://simplestatistics.org/docs/#ckmeans) implementation from the [simple-statistics](https://github.com/simple-statistics/simple-statistics) library–with the original algorithm written by [Haizhou Wang and Mingzhou Song](http://journal.r-project.org/archive/2011-2/RJournal_2011-2_Wang+Song.pdf)
