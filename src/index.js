@@ -1,6 +1,6 @@
 var ckmeans = require('./ckmeans.js');
 
-module.exports = function d3scaleCluster () {
+function d3scaleCluster () {
   var clusters = [];
   var domain = [];
   var range = [];
@@ -77,4 +77,10 @@ module.exports = function d3scaleCluster () {
 
   return scale;
 };
+
+if (typeof d3 === 'object') {
+	d3.scaleCluster = d3scaleCluster;
+}
+
+module.exports = d3scaleCluster;
 

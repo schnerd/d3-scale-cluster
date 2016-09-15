@@ -5,7 +5,8 @@
   "repository": "schnerd/d3-scale-cluster",
   "main": "src/index.js",
   "scripts": {
-    "test": "node spec/index.js"
+    "test": "node spec/index.js",
+	"build": "./node_modules/.bin/webpack --optimize-minimize src/index.js dist/d3-scale-cluster.min.js"
   },
   "author": "David Schnurr",
   "license": "MIT",
@@ -16,6 +17,7 @@
     "eslint-plugin-promise": "^2.0.1",
     "eslint-plugin-standard": "^2.0.0",
     "jasmine": "^2.5.1",
-    "jasmine-console-reporter": "^1.2.7"
+    "jasmine-console-reporter": "^1.2.7",
+    "webpack": "^1.13.2"
   }
 }
