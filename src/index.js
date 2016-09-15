@@ -67,7 +67,7 @@ function d3scaleCluster () {
     return [extentA, extentB];
   };
 
-  scale.breaks = function () {
+  scale.clusters = function () {
     return breakpoints.slice(1);
   };
 

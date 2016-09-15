@@ -9,13 +9,13 @@ describe('Scale', function () {
     scale = d3scaleCluster();
   });
 
-  it('should find natural breaks', function () {
+  it('should find clusters', function () {
     scale
       .domain(DEFAULT_DOMAIN)
       .range(DEFAULT_RANGE);
 
-    var breaks = scale.breaks();
-    expect(breaks).toEqual([12, 43, 123, 234, 1244]);
+    var clusters = scale.clusters();
+    expect(clusters).toEqual([12, 43, 123, 234, 1244]);
     expect(scale(52)).toEqual('c');
   });
 
