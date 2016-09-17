@@ -2,6 +2,10 @@
 
 D3 scale that clusters data into discrete groups. Similar to [quantile scales](https://github.com/d3/d3-scale/blob/master/README.md#scaleQuantile), the cluster scale maps a sampled input domain to a discrete range. The number of values in (the cardinality of) the output range determines the number of clusters that will be computed from the domain. The clusters are computed using a 1-dimensional clustering algorithm explained later in this document.
 
+Here's a comparison between cluster, quantile, and quantize:
+
+<img width="420" alt="d3 scale cluster example" src="https://cloud.githubusercontent.com/assets/875591/18608070/0213d7ce-7cdf-11e6-89aa-1b0e18e63cc8.png">
+
 ###Usage Overview
 
 This scale largely has the same API as [d3.scaleQuantile](https://github.com/d3/d3-scale/blob/master/README.md#scaleQuantile) (however we use `clusters()` instead of `quantiles()`)
