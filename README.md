@@ -4,7 +4,7 @@ D3 scale that clusters data into discrete groups. Similar to [quantile scales](h
 
 <img width="420" alt="d3 scale cluster example" src="https://cloud.githubusercontent.com/assets/875591/18608070/0213d7ce-7cdf-11e6-89aa-1b0e18e63cc8.png">
 
-Clusters are computed using a 1-dimensional clustering algorithm explained later in this document. While this algorithm does produce nice results, it should be noted that it can be an order of magnitude slower than quantile and quantize. You should do your own testing to ensure it meets the performance requirements of your application.
+Clusters are computed using a 1-dimensional clustering algorithm with an `O(kn log(n))` runtime (where `k` is the number of clusters desired). This should be fast enough for the majority of projects, but it's worth doing your own performance testing when working with large data sets. More details about the algorithm can be found later in this document.  
 
 To use this scale, you may install via npm:
 ```
@@ -62,9 +62,13 @@ Returns an exact copy of this scale. Changes to this scale will not affect the r
 
 ###The Algorithm / History
 
-For clustering, this project uses the [Ckmeans](http://simplestatistics.org/docs/#ckmeans) algorithm implementation from the [simple-statistics](https://github.com/simple-statistics/simple-statistics) library (the original algorithm was written by [Haizhou Wang and Mingzhou Song](http://journal.r-project.org/archive/2011-2/RJournal_2011-2_Wang+Song.pdf)). This algorithm is a minor improvement on the [Jenks Natural Breaks](https://en.wikipedia.org/wiki/Jenks_natural_breaks_optimization) algorithm developed by cartographer George Jenks. Tom MacWright wrote previously about [using Jenks Natural Breaks for d3 choropleths](http://www.macwright.org/2013/02/18/literate-jenks.html), but to my knowledge it was never turned into a reusable d3 scale.
+For clustering, this project uses the [Ckmeans](http://simplestatistics.org/docs/#ckmeans) algorithm implementation from the [simple-statistics](https://github.com/simple-statistics/simple-statistics) library (the original algorithm was designed by [Haizhou Wang and Mingzhou Song](https://cran.r-project.org/web/packages/Ckmeans.1d.dp/)). This algorithm is a major improvement on the [Jenks Natural Breaks](https://en.wikipedia.org/wiki/Jenks_natural_breaks_optimization) algorithm developed by cartographer George Jenks. Tom MacWright wrote previously about [using Jenks Natural Breaks for d3 choropleths](http://www.macwright.org/2013/02/18/literate-jenks.html), but to my knowledge it was never turned into a reusable d3 scale.
 
-As noted previously in this document, the Ckmeans algorithm is much slower than other d3 scales like quantile and quantize–with an algorithmic time complexity of O(k*n^2), where `k` is the number of clusters. For a sample size of 1000, the algorithm takes roughly 30ms on Chrome 53 for a 2013 Macbook Pro 3.1GHz Intel Core i7. A sample size of 3,500 (roughly the number of counties in a US county choropleth) takes roughly 270ms on the same machine. Consider these performance limitations when you are deciding whether this is the right solution for your application. I'll be investigating faster clustering algorithms to use in this scale in the future, and would love to hear any suggestions if you have them.
+As noted previously in this document, the Ckmeans algorithm has a runtime complexity of  `O(kn log(n))`, where `k` is the number of clusters. Here's a chart of the observed runtime on Chrome 53 for a 2011 Macbook Pro 2GHz Intel Core i7:
+
+![screen shot 2016-10-13 at 2 14 41 pm](https://cloud.githubusercontent.com/assets/875591/19367754/5159b53e-9151-11e6-9fee-52ce88cdf696.png)
+
+>Fun fact: In May 2016, Haizhou Wang and Mingzhou Song implemented a new core Ckmeans algorithm (3.4.6) that improved runtime from `O(kn^2)` to `O(kn log(n))`, leading to a roughly [10x performance boost](https://cloud.githubusercontent.com/assets/875591/19367940/67688548-9152-11e6-9c2e-01e3e800bb65.png). d3-scale-cluster is one of the first javascript projects to utilize and benefit from this new algorithm.  
 
 ###Contributing
 

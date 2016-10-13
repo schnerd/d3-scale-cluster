@@ -1,7 +1,11 @@
 /**
  * Ckmeans algorithm
  *
- * The code that lies within was taken from the wonderful simple-statistics library
+ * Much of the code that lies within was taken from the simple-statistics library,
+ * which offers a javascript implementation of the ckmeans algorithm originally
+ * designed by Haizhou Wang and Mingzhou Song
+ *
+ * https://cran.r-project.org/web/packages/Ckmeans.1d.dp/
  * https://github.com/simple-statistics/simple-statistics
  *
  * The simple-statistics software license is included below
@@ -59,6 +63,115 @@ function makeMatrix (columns, rows) {
   return matrix;
 }
 
+function ssq (j, i, sumX, sumXsq) {
+  var sji; // s(j, i)
+  if (j > 0) {
+    var muji = (sumX[i] - sumX[j - 1]) / (i - j + 1); // mu(j, i)
+    sji = sumXsq[i] - sumXsq[j - 1] - (i - j + 1) * muji * muji;
+  } else {
+    sji = sumXsq[i] - sumX[i] * sumX[i] / (i + 1);
+  }
+  return sji < 0 ? 0 : sji;
+}
+
+function fillMatrixColumn (imin, imax, column, matrix, backtrackMatrix, sumX, sumXsq) {
+  if (imin > imax) {
+    return;
+  }
+
+  // Start at midpoint between imin and imax
+  var i = Math.floor((imin + imax) / 2);
+
+  // Initialization of S[k][i]:
+  matrix[column][i] = matrix[column - 1][i - 1];
+  backtrackMatrix[column][i] = i;
+
+  var jlow = column; // the lower end for j
+
+  if (imin > column) {
+    jlow = Math.max(jlow, backtrackMatrix[column][imin - 1] || 0);
+  }
+  jlow = Math.max(jlow, backtrackMatrix[column - 1][i] || 0);
+
+  var jhigh = i - 1; // the upper end for j
+  if (imax < matrix.length - 1) {
+    jhigh = Math.min(jhigh, backtrackMatrix[column][imax + 1] || 0);
+  }
+
+  var sji;
+  var sjlowi;
+  var ssqjlow;
+  var ssqj;
+  for (var j = jhigh; j >= jlow; --j) {
+    // compute s(j,i)
+    sji = ssq(j, i, sumX, sumXsq);
+
+    // MS May 11, 2016 Added:
+    if (sji + matrix[column - 1][jlow - 1] >= matrix[column][i]) {
+      break;
+    }
+
+    // Examine the lower bound of the cluster border
+    // compute s(jlow, i)
+    sjlowi = ssq(jlow, i, sumX, sumXsq);
+
+    ssqjlow = sjlowi + matrix[column - 1][jlow - 1];
+
+    if (ssqjlow < matrix[column][i]) {
+      // shrink the lower bound
+      matrix[column][i] = ssqjlow;
+      backtrackMatrix[column][i] = jlow;
+    }
+    jlow++;
+
+    ssqj = sji + matrix[column - 1][j - 1];
+    if (ssqj < matrix[column][i]) {
+      matrix[column][i] = ssqj;
+      backtrackMatrix[column][i] = j;
+    }
+  }
+
+  fillMatrixColumn(imin, i - 1, column, matrix, backtrackMatrix, sumX, sumXsq);
+  fillMatrixColumn(i + 1, imax, column, matrix, backtrackMatrix, sumX, sumXsq);
+}
+
+function fillMatrices (data, matrix, backtrackMatrix) {
+  var nValues = matrix[0].length;
+  var sumX = new Array(nValues);
+  var sumXsq = new Array(nValues);
+
+  // Use the median to shift values of x to improve numerical stability
+  var shift = data[Math.floor(nValues / 2)];
+
+  // Initialize first row in matrix & backtrackMatrix
+  for (var i = 0; i < nValues; ++i) {
+    if (i === 0) {
+      sumX[0] = data[0] - shift;
+      sumXsq[0] = (data[0] - shift) * (data[0] - shift);
+    } else {
+      sumX[i] = sumX[i - 1] + data[i] - shift;
+      sumXsq[i] = sumXsq[i - 1] + (data[i] - shift) * (data[i] - shift);
+    }
+
+    // Initialize for k = 0
+    matrix[0][i] = ssq(0, i, sumX, sumXsq);
+    backtrackMatrix[0][i] = 0;
+  }
+
+  // Initialize the rest of the columns
+  var imin;
+  for (var k = 1; k < matrix.length; ++k) {
+    if (k < matrix.length - 1) {
+      imin = k;
+    } else {
+      // No need to compute matrix[K-1][0] ... matrix[K-1][N-2]
+      imin = nValues - 1;
+    }
+
+    fillMatrixColumn(imin, nValues - 1, k, matrix, backtrackMatrix, sumX, sumXsq);
+  }
+}
+
 /**
  * Ckmeans clustering is an improvement on heuristic-based clustering
  * approaches like Jenks. The algorithm was developed in
@@ -102,6 +215,8 @@ function ckmeans (data, nClusters) {
     throw new Error('Cannot generate more classes than there are data values');
   }
 
+  var nValues = data.length;
+
   var sorted = numericSort(data);
   // we'll use this as the maximum number of clusters
   var uniqueCount = uniqueCountSorted(sorted);
@@ -111,74 +226,18 @@ function ckmeans (data, nClusters) {
   if (uniqueCount === 1) {
     return [sorted];
   }
+  nClusters = Math.min(uniqueCount, nClusters);
 
-  // named 'D' originally
-  var matrix = makeMatrix(nClusters, sorted.length);
-  // named 'B' originally
-  var backtrackMatrix = makeMatrix(nClusters, sorted.length);
+  // named 'S' originally
+  var matrix = makeMatrix(nClusters, nValues);
+  // named 'J' originally
+  var backtrackMatrix = makeMatrix(nClusters, nValues);
 
   // This is a dynamic programming way to solve the problem of minimizing
   // within-cluster sum of squares. It's similar to linear regression
   // in this way, and this calculation incrementally computes the
   // sum of squares that are later read.
-
-  // The outer loop iterates through clusters, from 0 to nClusters.
-  for (var cluster = 0; cluster < nClusters; cluster++) {
-    // At the start of each loop, the mean starts as the first element
-    var firstClusterMean = sorted[0];
-
-    for (var sortedIdx = Math.max(cluster, 1);
-         sortedIdx < sorted.length;
-         sortedIdx++) {
-      if (cluster === 0) {
-        // Increase the running sum of squares calculation by this
-        // new value
-        var squaredDifference = Math.pow(
-          sorted[sortedIdx] - firstClusterMean,
-          2
-        );
-        matrix[cluster][sortedIdx] = matrix[cluster][sortedIdx - 1] +
-          (sortedIdx / (sortedIdx + 1)) * squaredDifference;
-
-        // We're computing a running mean by taking the previous
-        // mean value, multiplying it by the number of elements
-        // seen so far, and then dividing it by the number of
-        // elements total.
-        var newSum = sortedIdx * firstClusterMean + sorted[sortedIdx];
-        firstClusterMean = newSum / (sortedIdx + 1);
-      } else {
-        var sumSquaredDistances = 0;
-        var meanXJ = 0;
-
-        for (var j = sortedIdx; j >= cluster; j--) {
-          sumSquaredDistances += (sortedIdx - j) /
-            (sortedIdx - j + 1) *
-            Math.pow(sorted[j] - meanXJ, 2);
-
-          meanXJ = (sorted[j] + (sortedIdx - j) * meanXJ) /
-            (sortedIdx - j + 1);
-
-          if (j === sortedIdx) {
-            matrix[cluster][sortedIdx] = sumSquaredDistances;
-            backtrackMatrix[cluster][sortedIdx] = j;
-            if (j > 0) {
-              matrix[cluster][sortedIdx] += matrix[cluster - 1][j - 1];
-            }
-          } else {
-            if (j === 0) {
-              if (sumSquaredDistances <= matrix[cluster][sortedIdx]) {
-                matrix[cluster][sortedIdx] = sumSquaredDistances;
-                backtrackMatrix[cluster][sortedIdx] = j;
-              }
-            } else if (sumSquaredDistances + matrix[cluster - 1][j - 1] < matrix[cluster][sortedIdx]) {
-              matrix[cluster][sortedIdx] = sumSquaredDistances + matrix[cluster - 1][j - 1];
-              backtrackMatrix[cluster][sortedIdx] = j;
-            }
-          }
-        }
-      }
-    }
-  }
+  fillMatrices(sorted, matrix, backtrackMatrix);
 
   // The real work of Ckmeans clustering happens in the matrix generation:
   // the generated matrices encode all possible clustering combinations, and
@@ -190,7 +249,7 @@ function ckmeans (data, nClusters) {
   // Backtrack the clusters from the dynamic programming matrix. This
   // starts at the bottom-right corner of the matrix (if the top-left is 0, 0),
   // and moves the cluster target with the loop.
-  for (cluster = backtrackMatrix.length - 1; cluster >= 0; cluster--) {
+  for (var cluster = backtrackMatrix.length - 1; cluster >= 0; cluster--) {
     var clusterLeft = backtrackMatrix[cluster][clusterRight];
 
     // fill the cluster from the sorted input by taking a slice of the
