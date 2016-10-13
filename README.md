@@ -13,7 +13,7 @@ npm install d3-cluster-scale
 
 Or include a `<script>` tag on your page after d3
 ```
-<script src="https://unpkg.com/d3-scale-cluster@1.0.1/dist/d3-scale-cluster.min.js"></script>
+<script src="https://unpkg.com/d3-scale-cluster@1.1.0/dist/d3-scale-cluster.min.js"></script>
 ```
 
 ###Example Usage
