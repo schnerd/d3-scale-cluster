@@ -1,6 +1,6 @@
 {
   "name": "d3-scale-cluster",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "D3 scale that clusters data into discrete groups",
   "repository": "schnerd/d3-scale-cluster",
   "main": "src/index.js",
