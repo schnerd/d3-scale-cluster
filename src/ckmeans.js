@@ -31,7 +31,7 @@
 
 function numericSort (array) {
   return array
-    // ensure the array is changed in-place
+    // ensure the array is not changed in-place
     .slice()
     // comparator function that treats input as numeric
     .sort(function (a, b) {
