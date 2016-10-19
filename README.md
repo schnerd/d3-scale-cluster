@@ -8,7 +8,7 @@ Clusters are computed using a 1-dimensional clustering algorithm with an `O(kn l
 
 To use this scale, you may install via npm:
 ```
-npm install d3-cluster-scale
+npm install --save d3-scale-cluster
 ```
 
 Or include a `<script>` tag on your page after d3
