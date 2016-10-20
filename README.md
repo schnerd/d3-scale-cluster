@@ -1,21 +1,48 @@
 # d3-scale-cluster
 
-D3 scale that clusters data into discrete groups. Similar to [quantile scales](https://github.com/d3/d3-scale/blob/master/README.md#scaleQuantile), the cluster scale maps a sampled input domain to a discrete range. The number of values in the output range determines the number of clusters that will be computed from the domain. The graphic below demonstrates how cluster compares to d3's quantile and quantize scales:
+A custom D3 scale powered by a 1-dimensional clustering algoirthm. Similar to [quantile scales](https://github.com/d3/d3-scale/blob/master/README.md#scaleQuantile), the cluster scale maps a continuous input domain to a discrete range. The number of values in the output range determines the number of clusters that will be computed from the domain. The graphic below demonstrates how cluster compares to D3's quantile and quantize scales:
 
 <img width="420" alt="d3 scale cluster example" src="https://cloud.githubusercontent.com/assets/875591/18608070/0213d7ce-7cdf-11e6-89aa-1b0e18e63cc8.png">
 
-Clusters are computed using a 1-dimensional clustering algorithm with an `O(kn log(n))` runtime (where `k` is the number of clusters desired). This should be fast enough for the majority of projects, but it's worth doing your own performance testing when working with large data sets. More details about the algorithm can be found later in this document.  
+You can also check out the ["Choropleth with d3-scale-cluster"](https://bl.ocks.org/schnerd/99767e64051096388078913afca3ff4e) block for an interactive comparison of cluster, quantile, and quantize scales.
 
-To use this scale, you may install via npm:
+Clusters are computed using a 1-dimensional clustering algorithm with an `O(kn log(n))` runtime (where `k` is the number of clusters desired). This should be [fast enough for the majority of data sets](https://cloud.githubusercontent.com/assets/875591/19367754/5159b53e-9151-11e6-9fee-52ce88cdf696.png), but it's worth doing your own performance testing.
+
+For more details on this project and the underlying clustering algorithm, please read this blog post on Medium: ["Using clustering to create a new D3.js color scale"](https://medium.com/@dschnr/using-clustering-to-create-a-new-d3-js-color-scale-dec4ccd639d2)
+
+###Getting Started
+
+#####Using npm
+
+Install the npm package
+
 ```
 npm install --save d3-scale-cluster
 ```
 
-Or include a `<script>` tag on your page after d3
-```
-<script src="https://unpkg.com/d3-scale-cluster@1.1.2/dist/d3-scale-cluster.min.js"></script>
+Load the scale into your project
+
+```es6
+// Using ES6 imports 
+import scaleCluster from 'd3-scale-cluster';
+
+// Or, using require
+var scaleCluster = require('d3-scale-cluster');
 ```
 
+#####Using a `<script>` tag
+
+Include the following script tag on your page after D3
+
+```html
+<script src="https://unpkg.com/d3-scale-cluster@1.1.3/dist/d3-scale-cluster.min.js"></script>
+```
+
+Reference the scale directly from the d3 object
+
+```es6
+var scale = d3.scaleCluster();
+```
 ###Example Usage
 
 This scale largely has the same API as [d3.scaleQuantile](https://github.com/d3/d3-scale/blob/master/README.md#scaleQuantile) (however we use `clusters()` instead of `quantiles()`)
@@ -60,16 +87,6 @@ _cluster_.**copy**()
 
 Returns an exact copy of this scale. Changes to this scale will not affect the returned scale, and vice versa.
 
-###The Algorithm / History
-
-For clustering, this project uses the [Ckmeans](http://simplestatistics.org/docs/#ckmeans) algorithm implementation from the [simple-statistics](https://github.com/simple-statistics/simple-statistics) library (the original algorithm was designed by [Haizhou Wang and Mingzhou Song](https://cran.r-project.org/web/packages/Ckmeans.1d.dp/)). This algorithm is a major improvement on the [Jenks Natural Breaks](https://en.wikipedia.org/wiki/Jenks_natural_breaks_optimization) algorithm developed by cartographer George Jenks. Tom MacWright wrote previously about [using Jenks Natural Breaks for d3 choropleths](http://www.macwright.org/2013/02/18/literate-jenks.html), but to my knowledge it was never turned into a reusable d3 scale.
-
-As noted previously in this document, the Ckmeans algorithm has a runtime complexity of  `O(kn log(n))`, where `k` is the number of clusters. Here's a chart of the observed runtime on Chrome 53 for a 2011 Macbook Pro 2GHz Intel Core i7:
-
-![screen shot 2016-10-13 at 2 14 41 pm](https://cloud.githubusercontent.com/assets/875591/19367754/5159b53e-9151-11e6-9fee-52ce88cdf696.png)
-
->Fun fact: In May 2016, Haizhou Wang and Mingzhou Song implemented a new core Ckmeans algorithm (3.4.6) that improved runtime from `O(kn^2)` to `O(kn log(n))`, leading to a roughly [10x performance boost](https://cloud.githubusercontent.com/assets/875591/19367940/67688548-9152-11e6-9c2e-01e3e800bb65.png). d3-scale-cluster is one of the first javascript projects to utilize and benefit from this new algorithm.  
-
 ###Contributing
 
 ```
@@ -77,3 +94,7 @@ npm install
 npm run test  # run tests
 npm run build # build distributable file
 ```
+
+###Thanks
+
+Thanks to Haizhou Wang and Mingzhou Song for developing the original [Ckmeans 1D clustering algorithm](https://cran.r-project.org/web/packages/Ckmeans.1d.dp/), and Tom MacWright for his [previous work](http://www.macwright.org/2013/02/18/literate-jenks.html) in bringing these techniques to the web.
