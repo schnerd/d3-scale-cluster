@@ -36,4 +36,11 @@ describe('Scale', function () {
   it('should return undefined if no domain or range has been defined', function () {
     expect(scale(100)).toEqual(undefined);
   });
+
+  it('should "gracefully" handle cases where range has more values than domain', function () {
+    scale
+      .domain([1, 2, 4])
+      .range(DEFAULT_RANGE);
+    expect(scale(4)).toEqual('c');
+  });
 });
