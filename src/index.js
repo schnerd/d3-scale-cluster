@@ -77,7 +77,7 @@ function d3scaleCluster () {
   };
 
   return scale;
-};
+}
 
 if (typeof d3 === 'object') {
 	d3.scaleCluster = d3scaleCluster;
