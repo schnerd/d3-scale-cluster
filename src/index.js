@@ -80,11 +80,11 @@ function d3scaleCluster () {
 }
 
 if (typeof d3 === 'object') {
-	d3.scaleCluster = d3scaleCluster;
+  d3.scaleCluster = d3scaleCluster;
 }
 
 if (typeof window.define === 'function' && window.define.amd) {
-  window.define(['d3'], function(d3) {
+  window.define(['d3'], function (d3) {
     return d3scaleCluster;
   });
 }
