@@ -84,7 +84,7 @@ if (typeof d3 === 'object') {
 }
 
 if (typeof window.define === 'function' && window.define.amd) {
-  window.define(['d3'], function (d3) {
+  window.define([], function () {
     return d3scaleCluster;
   });
 }
