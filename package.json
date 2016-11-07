@@ -5,17 +5,18 @@
   "repository": "schnerd/d3-scale-cluster",
   "main": "src/index.js",
   "scripts": {
-    "test": "node spec/index.js",
-    "build": "webpack"
+    "test": "npm run lint && node spec/index.js",
+    "build": "webpack",
+	"lint": "eslint src/*"
   },
   "author": "David Schnurr",
   "license": "MIT",
   "devDependencies": {
     "d3": "^4.2.2",
-    "eslint": "^3.5.0",
-    "eslint-config-standard": "^6.0.0",
-    "eslint-plugin-promise": "^2.0.1",
-    "eslint-plugin-standard": "^2.0.0",
+    "eslint": "^3.9.1",
+    "eslint-config-standard": "^6.2.1",
+    "eslint-plugin-promise": "^3.3.1",
+    "eslint-plugin-standard": "^2.0.1",
     "jasmine": "^2.5.1",
     "jasmine-console-reporter": "^1.2.7",
     "webpack": "^1.13.2"
