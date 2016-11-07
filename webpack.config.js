@@ -1,7 +1,5 @@
 var webpack = require('webpack');
 var path = require('path');
-var libraryName = 'library';
-var outputFile = libraryName + '.js';
 
 var config = {
 	entry: __dirname + '/src/index.js',
@@ -18,3 +16,4 @@ var config = {
 };
 
 module.exports = config;
+
