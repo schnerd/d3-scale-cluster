@@ -35,7 +35,7 @@ var scaleCluster = require('d3-scale-cluster');
 Include the following script tag on your page after D3
 
 ```html
-<script src="https://unpkg.com/d3-scale-cluster@1.1.5/dist/d3-scale-cluster.min.js"></script>
+<script src="https://unpkg.com/d3-scale-cluster@1.1.7/dist/d3-scale-cluster.min.js"></script>
 ```
 
 Reference the scale directly from the d3 object

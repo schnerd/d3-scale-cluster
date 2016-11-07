@@ -1,6 +1,6 @@
 # Changelog
 
-### 1.1.6
+### 1.1.7
 
 * Add support for RequireJS/AMD (thanks @kimxogus)
 
