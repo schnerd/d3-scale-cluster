@@ -7,7 +7,7 @@ module.exports = {
     "rules": {
         "semi": ["off"]
     },
-	"globals": {
-		"d3": true
-	}
+    "globals": {
+        "d3": true
+    }
 };
