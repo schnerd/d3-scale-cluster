@@ -1,6 +1,6 @@
 # d3-scale-cluster
 
-A custom D3 scale powered by a 1-dimensional clustering algoirthm. Similar to [quantile scales](https://github.com/d3/d3-scale/blob/master/README.md#scaleQuantile), the cluster scale maps a continuous input domain to a discrete range. The number of values in the output range determines the number of clusters that will be computed from the domain. The graphic below demonstrates how cluster compares to D3's quantile and quantize scales:
+A custom D3 scale powered by a 1-dimensional clustering algorithm. Similar to [quantile scales](https://github.com/d3/d3-scale/blob/master/README.md#scaleQuantile), the cluster scale maps a continuous input domain to a discrete range. The number of values in the output range determines the number of clusters that will be computed from the domain. The graphic below demonstrates how cluster compares to D3's quantile and quantize scales:
 
 <img width="420" alt="d3 scale cluster example" src="https://cloud.githubusercontent.com/assets/875591/18608070/0213d7ce-7cdf-11e6-89aa-1b0e18e63cc8.png">
 
