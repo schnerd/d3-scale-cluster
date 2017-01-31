@@ -98,3 +98,9 @@ npm run build # build distributable file
 ###Thanks
 
 Thanks to Haizhou Wang and Mingzhou Song for developing the original [Ckmeans 1D clustering algorithm](https://cran.r-project.org/web/packages/Ckmeans.1d.dp/), and Tom MacWright for his [previous work](http://www.macwright.org/2013/02/18/literate-jenks.html) in bringing these techniques to the web.
+
+###Links & Resources
+
+- [Using clustering to create a new D3.js color scale](https://medium.com/@dschnr/using-clustering-to-create-a-new-d3-js-color-scale-dec4ccd639d2) - Medium post describing this project
+- [Choropleth with d3-scale-cluster](https://bl.ocks.org/schnerd/99767e64051096388078913afca3ff4e) - Interactive block comparing cluster, quantile, and quantize scales
+- [Interactive d3-scale-cluster demo](http://bl.ocks.org/tomshanley/raw/2de81c66fbe4cab9dc4e4e4c579a4d1a/) - Paste in your data to see clusters. By [@tomshanleynz](https://twitter.com/tomshanleynz)
