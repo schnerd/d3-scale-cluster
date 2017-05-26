@@ -10,9 +10,9 @@ Clusters are computed using a 1-dimensional clustering algorithm with an `O(kn l
 
 For more details on this project and the underlying clustering algorithm, please read this blog post on Medium: ["Using clustering to create a new D3.js color scale"](https://medium.com/@dschnr/using-clustering-to-create-a-new-d3-js-color-scale-dec4ccd639d2)
 
-###Getting Started
+### Getting Started
 
-#####Using npm
+##### Using npm
 
 Install the npm package
 
@@ -30,7 +30,7 @@ import scaleCluster from 'd3-scale-cluster';
 var scaleCluster = require('d3-scale-cluster');
 ```
 
-#####Using a `<script>` tag
+##### Using a `<script>` tag
 
 Include the following script tag on your page after D3
 
@@ -43,7 +43,7 @@ Reference the scale directly from the d3 object
 ```es6
 var scale = d3.scaleCluster();
 ```
-###Example Usage
+### Example Usage
 
 This scale largely has the same API as [d3.scaleQuantile](https://github.com/d3/d3-scale/blob/master/README.md#scaleQuantile) (however we use `clusters()` instead of `quantiles()`)
 
@@ -57,7 +57,7 @@ var color = scale(52); // '#9E58AF'
 var extent = scale.invertExtent('#9E58AF'); // [43, 123]
 ```
 
-###API
+### API
 
 d3.**scaleCluster**()
 
@@ -87,7 +87,7 @@ _cluster_.**copy**()
 
 Returns an exact copy of this scale. Changes to this scale will not affect the returned scale, and vice versa.
 
-###Contributing
+### Contributing
 
 ```
 npm install
@@ -95,11 +95,11 @@ npm run test  # run tests
 npm run build # build distributable file
 ```
 
-###Thanks
+### Thanks
 
 Thanks to Haizhou Wang and Mingzhou Song for developing the original [Ckmeans 1D clustering algorithm](https://cran.r-project.org/web/packages/Ckmeans.1d.dp/), and Tom MacWright for his [previous work](http://www.macwright.org/2013/02/18/literate-jenks.html) in bringing these techniques to the web.
 
-###Links & Resources
+### Links & Resources
 
 - [Using clustering to create a new D3.js color scale](https://medium.com/@dschnr/using-clustering-to-create-a-new-d3-js-color-scale-dec4ccd639d2) - Medium post describing this project
 - [Choropleth with d3-scale-cluster](https://bl.ocks.org/schnerd/99767e64051096388078913afca3ff4e) - Interactive block comparing cluster, quantile, and quantize scales
