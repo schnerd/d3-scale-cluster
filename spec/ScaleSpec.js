@@ -17,6 +17,9 @@ describe('Scale', function () {
     var clusters = scale.clusters();
     expect(clusters).toEqual([12, 43, 123, 234, 1244]);
     expect(scale(52)).toEqual('c');
+    var exported = scale.export()
+    var newScale = d3scaleCluster().import(exported)
+    expect(newScale(52)).toEqual('c');
   });
 
   it('should be able to invert extent', function () {
@@ -31,7 +34,7 @@ describe('Scale', function () {
       .domain(DEFAULT_DOMAIN)
       .range(DEFAULT_RANGE);
     expect(scale.invertExtent('lol')).toEqual([NaN, NaN]);
-  });
+    });
 
   it('should return undefined if no domain or range has been defined', function () {
     expect(scale(100)).toEqual(undefined);
@@ -42,5 +45,8 @@ describe('Scale', function () {
       .domain([1, 2, 4])
       .range(DEFAULT_RANGE);
     expect(scale(4)).toEqual('c');
+    var exported = scale.export()
+    var newScale = d3scaleCluster().import(exported)
+    expect(newScale(4)).toEqual('c');
   });
 });
