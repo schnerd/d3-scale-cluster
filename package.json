@@ -7,7 +7,7 @@
   "scripts": {
     "test": "npm run lint && node spec/index.js",
     "build": "webpack",
-	"lint": "eslint src/*"
+    "lint": "eslint src/*"
   },
   "author": "David Schnurr",
   "license": "MIT",

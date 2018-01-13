@@ -1,13 +1,13 @@
 var ckmeans = require('./ckmeans.js');
 
 function d3scaleCluster () {
-  var clusters = [];
+  var isReady = false;
   var domain = [];
   var range = [];
   var breakpoints = [];
 
   var scale = function (x) {
-    if (clusters.length === 0) return undefined;
+    if (!isReady) return undefined;
 
     for (var i = breakpoints.length - 1; i >= 0; i--) {
       if (x >= breakpoints[i]) {
@@ -22,8 +22,8 @@ function d3scaleCluster () {
       return;
     }
 
-    clusters = ckmeans(domain, Math.min(domain.length, range.length));
-
+    var clusters = ckmeans(domain, Math.min(domain.length, range.length));
+    isReady = clusters.length !== 0
     breakpoints = [];
     for (var i = 0; i < clusters.length; i++) {
       breakpoints.push(clusters[i][0]);
@@ -71,6 +71,26 @@ function d3scaleCluster () {
   scale.clusters = function () {
     return breakpoints.slice(1);
   };
+
+  scale.export = function () {
+    return {
+      isReady: isReady,
+      domain: domain,
+      range: range,
+      breakpoints: breakpoints
+    }
+  }
+
+  scale.import = function (params) {
+    if (!params) {
+      throw new Error('Import requires parameters')
+    }
+    isReady = params.isReady
+    domain = params.domain
+    range = params.range
+    breakpoints = params.breakpoints
+    return scale
+  }
 
   scale.copy = function () {
     return d3scaleCluster().domain(domain).range(range);
