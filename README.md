@@ -23,7 +23,7 @@ npm install --save d3-scale-cluster
 Load the scale into your project
 
 ```es6
-// Using ES6 imports 
+// Using ES6 imports
 import scaleCluster from 'd3-scale-cluster';
 
 // Or, using require
@@ -86,6 +86,33 @@ Returns the cluster thresholds. If the range contains n discrete values, the ret
 _cluster_.**copy**()
 
 Returns an exact copy of this scale. Changes to this scale will not affect the returned scale, and vice versa.
+
+_cluster_.**import**()
+
+Updates the scale with the result of a _cluster_.**export**() call. Useful for offloading computation into a webworker.
+
+_cluster_.**export**()
+
+Exports the internals of the scale as an object, for use with _cluster_.**import**(). Useful for offloading computation into a webworker.
+
+### Using in a Web Worker
+
+For data sets of significant size, you may want to offload computation into a Web Worker so that it does not block the main thread. You can use _cluster_.**import**() and _cluster_.**export**() as follows:
+
+**worker.js**
+
+```js
+const scale = scaleCluster().domain(domain).range(range);
+self.postMessage({scale: scale.export()});
+```
+
+**Main thread**
+
+```js
+worker.onmessage = function (event) {
+    const scale = scaleCluster().import(event.data.scale)
+};
+```
 
 ### Contributing
 
