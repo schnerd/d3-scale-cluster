@@ -23,7 +23,7 @@ function d3scaleCluster () {
     }
 
     var clusters = ckmeans(domain, Math.min(domain.length, range.length));
-    isReady = clusters.length !== 0
+    isReady = clusters.length !== 0;
     breakpoints = [];
     for (var i = 0; i < clusters.length; i++) {
       breakpoints.push(clusters[i][0]);
@@ -78,19 +78,19 @@ function d3scaleCluster () {
       domain: domain,
       range: range,
       breakpoints: breakpoints
-    }
-  }
+    };
+  };
 
   scale.import = function (params) {
     if (!params) {
-      throw new Error('Import requires parameters')
+      throw new Error('Import requires parameters');
     }
-    isReady = params.isReady
-    domain = params.domain
-    range = params.range
-    breakpoints = params.breakpoints
-    return scale
-  }
+    isReady = params.isReady;
+    domain = params.domain;
+    range = params.range;
+    breakpoints = params.breakpoints;
+    return scale;
+  };
 
   scale.copy = function () {
     return d3scaleCluster().domain(domain).range(range);
@@ -104,4 +104,3 @@ if (typeof d3 === 'object') {
 }
 
 module.exports = d3scaleCluster;
-
