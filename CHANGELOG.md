@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.2.0
+
+* Add helpers for computation in web worker (thanks @furstenheim-geoblink)
+
 ### 1.1.7
 
 * Add support for RequireJS/AMD (thanks @kimxogus)
