@@ -1,67 +1,53 @@
-#include <node_api.h>
-#include "./common.h"
-napi_value MyFunction(napi_env env, napi_callback_info info) {
-    size_t argc = 2;
-    napi_value args[2];
-    NAPI_CALL(env, napi_get_cb_info(env, info, &argc, args, NULL, NULL));
+#include <stdlib.h>
+#include <math.h>
 
-    NAPI_ASSERT(env, argc == 2, "Wrong number of arguments");
-
-    napi_valuetype valuetype0;
-    NAPI_CALL(env, napi_typeof(env, args[0], &valuetype0));
-
-    NAPI_ASSERT(env, valuetype0 == napi_object, "Wrong type of arguments. Expects typed array as first argument");
-
-    napi_value input_array = args[0];
-    bool is_typedarray;
-    NAPI_CALL(env, napi_is_typedarray(env, input_array, &is_typedarray));
-
-    NAPI_ASSERT(env, is_typedarray, "Wrong type of arguments. Expects typed array as first argument");
-
-    napi_valuetype valuetype1;
-    NAPI_CALL(env, napi_typeof(env, args[1], &valuetype1));
-
-    NAPI_ASSERT(env, valuetype1 == napi_number, "Wrong type of arguments. Expects number as second argument");
-
-    int nClusters;
-    NAPI_CALL(env, napi_get_value_int32(env, args[1], &nClusters));
-
-    napi_typedarray_type type;
-    napi_value input_buffer;
-    size_t byte_offset;
-    size_t i, length;
-    NAPI_CALL(env, napi_get_typedarray_info(
-        env, input_array, &type, &length, NULL, &input_buffer, &byte_offset));
-
-    void* data;
-    size_t byte_length;
-    NAPI_CALL(env, napi_get_arraybuffer_info(
-        env, input_buffer, &data, &byte_length));
-
-    NAPI_ASSERT(env, type == napi_float64_array, "Wrong type of arguments. Expects float typed array");
-
-    napi_value output_buffer;
-    void * output_ptr = NULL;
-    NAPI_CALL(env, napi_create_arraybuffer(env, byte_length, &output_ptr, &output_buffer));
-
-    napi_value output_array;
-    NAPI_CALL(env, napi_create_typedarray(
-        env, napi_float64_array, nClusters, output_buffer, byte_offset, &output_array));
-
-    double* input_doubles = (double*)((uint8_t*)(data) + byte_offset);
-    double* output_doubles = (double*)(output_ptr);
-
-    return output_array;
+int compare_doubles(const void *p, const void *q) {
+    double x = *(const double *)p;
+    double y = *(const double *)q;
+    if (x < y) {
+        return -1;
+    } else if (x > y) {
+        return 1;
+    }
+    return 0;
 }
 
-napi_value Init(napi_env env, napi_value exports) {
-    napi_property_descriptor descriptors[] = {
-        DECLARE_NAPI_PROPERTY("ckmeans", MyFunction),
-      };
+size_t unique_sort_count (double array[], size_t len) {
+    if (len == 0) {
+        return 0;
+    }
+    size_t uniqueValueCount = 1;
+    double lastSeenValue = array[0];
+    for (size_t i = 1; i < len; i++) {
+        if (array[i] != lastSeenValue) {
+            uniqueValueCount++;
+            lastSeenValue = array[i];
+        }
+    }
+    return uniqueValueCount;
+}
+size_t min_t (size_t a, size_t b) {
+    if (a < b) {
+        return a;
+    }
+    return b;
+}
+void ckmeans (double data[],size_t nValues, double output[], size_t *nClustersFinal, size_t nClusters) {
+    qsort(data, nValues, sizeof *data, &compare_doubles);
+    // we'll use as a maximum number of clusters
+    int uniqueCount = unique_sort_count(data, nValues);
+    if (uniqueCount == 1) {
+        *nClustersFinal = 1;
+        output[0] = data[0];
+        return;
+    }
+    nClusters = min_t(nClusters, uniqueCount);
+    // *nClustersFinal = nClusters;
+    const size_t sizeMatrix = nClusters * nValues;
+    double matrix[sizeMatrix];
+    double backtrackMatrix[sizeMatrix];
 
-      NAPI_CALL(env, napi_define_properties(
-          env, exports, sizeof(descriptors) / sizeof(*descriptors), descriptors));
-    return exports;
+
+
 }
 
-NAPI_MODULE(NODE_GYP_MODULE_NAME, Init)

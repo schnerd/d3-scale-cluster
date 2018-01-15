@@ -9,7 +9,8 @@
     "build": "webpack",
     "lint": "eslint src/*",
     "bench": "node bench/index.js",
-    "rebuild": "node-gyp rebuild"
+    "rebuild": "node-gyp rebuild",
+    "test-native": "node spec/native.js"
   },
   "author": "David Schnurr",
   "license": "MIT",

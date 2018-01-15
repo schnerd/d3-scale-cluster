@@ -2,7 +2,7 @@
     "targets": [{
         "target_name": "ckmeans",
         "sources": [
-            "./src/native/ckmeans.c"
+            "./src/native/napi_ckmeans.c"
         ],
         "include_dirs": [
           "<!@(node -p \"require('node-addon-api').include\")"
