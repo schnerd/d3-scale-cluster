@@ -41,11 +41,11 @@ size_t max_t (size_t a, size_t b) {
     return b;
 }
 // TODO
-double ssq(size_t j, size_t i, double sumX, double sumXsq) {
+double ssq(size_t j, size_t i, double sumX[], double sumXsq[]) {
     double coeff = (double) (i - j + 1);
     double muji = (sumX[i] - sumX[j - 1]) / coeff;
     double sji = sumXsq[i] - sumXsq[j - 1] - coeff * muji * muji;
-    return s0i < 0 ? 0 : s0i;
+    return sji < 0 ? 0 : sji;
 }
 
 double ssq0(size_t i, double sumX[], double sumXsq[]) {
@@ -53,7 +53,7 @@ double ssq0(size_t i, double sumX[], double sumXsq[]) {
     return s0i < 0 ? 0 : s0i;
 }
 
-void fillMatrixColumn(size_t imin, size_t imax, size_t column, size_t nColumns, size_t nRows, double matrix[], size_t backtrackMatrix[], double sumX[], double sumXsq) {
+void fillMatrixColumn(size_t imin, size_t imax, size_t column, size_t nColumns, size_t nRows, double matrix[], size_t backtrackMatrix[], double sumX[], double sumXsq[]) {
     if (imin > imax) {
         return;
     }
@@ -81,7 +81,7 @@ void fillMatrixColumn(size_t imin, size_t imax, size_t column, size_t nColumns, 
     for (size_t j = jlow; j < jhigh; j++) {
         // TODO ssq
         sji = ssq(j, i, sumX, sumXsq);
-        if (sji + matrix[(column - 1)* nRows + jlow - 1] >= matrix[column * nRows + i]]) {
+        if (sji + matrix[(column - 1)* nRows + jlow - 1] >= matrix[column * nRows + i]) {
             break;
         }
 
@@ -94,9 +94,15 @@ void fillMatrixColumn(size_t imin, size_t imax, size_t column, size_t nColumns, 
             matrix[column * nRows + i] = ssqjlow;
             backtrackMatrix[column * nRows + i] = j;
         }
+        jlow++;
+        ssqj = sji + matrix[(column - 1)  * nRows - 1 + j - 1];
+        if (ssqj < matrix[column * nRows + i]) {
+            matrix[column * nRows + i] = ssqj;
+            backtrackMatrix[column * nRows + i] = j;
+        }
     }
     fillMatrixColumn(imin, i -1, column, nColumns, nRows, matrix, backtrackMatrix, sumX, sumXsq);
-    fillMatrixColumn(i + 1, imax, column, nColumns, nRows, matrix, backtrackMatrix, sumX, sumXsq)
+    fillMatrixColumn(i + 1, imax, column, nColumns, nRows, matrix, backtrackMatrix, sumX, sumXsq);
 }
 
 void fillMatrices (double data[], size_t nValues, double matrix[], size_t backtrackMatrix [], size_t nColumns) {
@@ -145,9 +151,31 @@ void ckmeans (double data[],size_t nValues, double output[], size_t *nClustersFi
     double * matrix = malloc(sizeMatrix* sizeof(double));
     size_t * backtrackMatrix = malloc(sizeMatrix * sizeof(size_t));
 
-    // TODO free matrix free backtrack
+    size_t nRows = nValues;
+    size_t nColumns = nClusters;
+    fillMatrices(data, nValues, matrix, backtrackMatrix, nColumns);
 
+    // The real work of Ckmeans clustering happens in the matrix generation:
+    // the generated matrices encode all possible clustering combinations, and
+    // once they're generated we can solve for the best clustering groups
+    // very quickly.
 
+    size_t clusterRight = nClusters - 1;
+  // Backtrack the clusters from the dynamic programming matrix. This
+  // starts at the bottom-right corner of the matrix (if the top-left is 0, 0),
+  // and moves the cluster target with the loop.
+  for (size_t i = 0; i < nClusters; i ++) {
+    size_t cluster = nClusters - 1 - i;
+    size_t clusterLeft = backtrackMatrix[cluster * nRows + clusterRight];
 
+    // fill the cluster from the sorted input by taking a slice of the
+    // array. the backtrack matrix makes this easy - it stores the
+    // indexes where the cluster should start and end.
+    nClustersFinal[cluster] = data[clusterLeft];
+
+    if (cluster > 0) {
+      clusterRight = clusterLeft - 1;
+    }
+  }
 }
 

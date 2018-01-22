@@ -30,7 +30,7 @@ napi_value MyFunction(napi_env env, napi_callback_info info) {
     napi_typedarray_type type;
     napi_value input_buffer;
     size_t byte_offset;
-    size_t i, length;
+    size_t length;
     NAPI_CALL(env, napi_get_typedarray_info(
         env, input_array, &type, &length, NULL, &input_buffer, &byte_offset));
 
@@ -53,7 +53,7 @@ napi_value MyFunction(napi_env env, napi_callback_info info) {
     double* input_doubles = (double*)((uint8_t*)(data) + byte_offset);
     double* output_doubles = (double*)(output_ptr);
 
-    size_t * nClustersFinal = nClusters;
+    size_t nClustersFinal[nClusters];
     ckmeans(input_doubles, length, output_doubles, nClustersFinal, nClusters);
     return output_array;
 }
