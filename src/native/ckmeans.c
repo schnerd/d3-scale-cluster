@@ -151,6 +151,10 @@ void ckmeans (double data[],size_t nValues, double output[], size_t *nClustersFi
     double * matrix = malloc(sizeMatrix* sizeof(double));
     size_t * backtrackMatrix = malloc(sizeMatrix * sizeof(size_t));
 
+    for (size_t i = 0; i < sizeMatrix; i ++) {
+        matrix[i] = 0;
+        backtrackMatrix[i] = 0;
+    }
     size_t nRows = nValues;
     size_t nColumns = nClusters;
     fillMatrices(data, nValues, matrix, backtrackMatrix, nColumns);
@@ -164,7 +168,7 @@ void ckmeans (double data[],size_t nValues, double output[], size_t *nClustersFi
   // Backtrack the clusters from the dynamic programming matrix. This
   // starts at the bottom-right corner of the matrix (if the top-left is 0, 0),
   // and moves the cluster target with the loop.
-  for (size_t i = 0; i < nClusters; i ++) {
+  for (size_t i = 0; i < nClusters; i++) {
     size_t cluster = nClusters - 1 - i;
     size_t clusterLeft = backtrackMatrix[cluster * nRows + clusterRight];
 
@@ -177,5 +181,7 @@ void ckmeans (double data[],size_t nValues, double output[], size_t *nClustersFi
       clusterRight = clusterLeft - 1;
     }
   }
+  free(matrix);
+  free(backtrackMatrix);
 }
 

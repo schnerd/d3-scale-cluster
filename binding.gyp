@@ -17,6 +17,7 @@
            "-O3"
          ],
          "cflags_c": [
+           "-g",
            "-std=c99"
          ],
         "defines": [ "NAPI_DISABLE_CPP_EXCEPTIONS" ]

@@ -10,7 +10,8 @@
     "lint": "eslint src/*",
     "bench": "node bench/index.js",
     "rebuild": "node-gyp rebuild",
-    "test-native": "node spec/native.js"
+    "test-native": "node spec/native.js",
+    "debug-native": "lldb -- \"$(which node)\" spec/native.js"
   },
   "author": "David Schnurr",
   "license": "MIT",
