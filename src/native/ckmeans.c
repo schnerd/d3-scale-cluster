@@ -78,7 +78,7 @@ void fillMatrixColumn(size_t imin, size_t imax, size_t column, size_t nColumns, 
     double ssqjlow;
     double ssqj;
 
-    for (size_t j = jlow; j < jhigh; j++) {
+    for (size_t j = jhigh; j >= jlow; j--) {
         // TODO ssq
         sji = ssq(j, i, sumX, sumXsq);
         if (sji + matrix[(column - 1)* nRows + jlow - 1] >= matrix[column * nRows + i]) {
@@ -92,7 +92,7 @@ void fillMatrixColumn(size_t imin, size_t imax, size_t column, size_t nColumns, 
         if (ssqjlow < matrix[column * nRows + i]) {
             // shrink lower bound
             matrix[column * nRows + i] = ssqjlow;
-            backtrackMatrix[column * nRows + i] = j;
+            backtrackMatrix[column * nRows + i] = jlow;
         }
         jlow++;
         ssqj = sji + matrix[(column - 1)  * nRows - 1 + j - 1];
