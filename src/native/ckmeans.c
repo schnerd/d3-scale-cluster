@@ -149,11 +149,11 @@ void ckmeans (double data[],size_t nValues, double output[], size_t nClusters) {
     double * matrix = malloc(sizeMatrix* sizeof(double));
     size_t * backtrackMatrix = malloc(sizeMatrix * sizeof(size_t));
 
-    for (size_t i = 0; i < sizeMatrix; i ++) {
+    size_t nRows = nValues;
+    for (size_t i = 0; i < nRows; i ++) {
         matrix[i] = 0;
         backtrackMatrix[i] = 0;
     }
-    size_t nRows = nValues;
     size_t nColumns = nClusters;
     fillMatrices(data, nValues, matrix, backtrackMatrix, nColumns);
 

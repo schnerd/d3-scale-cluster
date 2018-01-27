@@ -24,10 +24,7 @@ function d3scaleCluster () {
 
     var clusters = ckmeans(domain, Math.min(domain.length, range.length));
     isReady = clusters.length !== 0
-    breakpoints = [];
-    for (var i = 0; i < clusters.length; i++) {
-      breakpoints.push(clusters[i][0]);
-    }
+    breakpoints = clusters;
   }
 
   scale.domain = function () {
