@@ -136,17 +136,15 @@ void fillMatrices (double data[], size_t nValues, double matrix[], size_t backtr
 
 
 }
-void ckmeans (double data[],size_t nValues, double output[], size_t *nClustersFinal, size_t nClusters) {
+void ckmeans (double data[],size_t nValues, double output[], size_t nClusters) {
     qsort(data, nValues, sizeof *data, &compare_doubles);
     // we'll use as a maximum number of clusters
     int uniqueCount = unique_sort_count(data, nValues);
     if (uniqueCount == 1) {
-        *nClustersFinal = 1;
         output[0] = data[0];
         return;
     }
     nClusters = min_t(nClusters, uniqueCount);
-    // *nClustersFinal = nClusters;
     const size_t sizeMatrix = nClusters * nValues;
     double * matrix = malloc(sizeMatrix* sizeof(double));
     size_t * backtrackMatrix = malloc(sizeMatrix * sizeof(size_t));
@@ -164,7 +162,7 @@ void ckmeans (double data[],size_t nValues, double output[], size_t *nClustersFi
     // once they're generated we can solve for the best clustering groups
     // very quickly.
 
-    size_t clusterRight = nClusters - 1;
+    size_t clusterRight = nRows - 1;
   // Backtrack the clusters from the dynamic programming matrix. This
   // starts at the bottom-right corner of the matrix (if the top-left is 0, 0),
   // and moves the cluster target with the loop.
@@ -175,7 +173,7 @@ void ckmeans (double data[],size_t nValues, double output[], size_t *nClustersFi
     // fill the cluster from the sorted input by taking a slice of the
     // array. the backtrack matrix makes this easy - it stores the
     // indexes where the cluster should start and end.
-    nClustersFinal[cluster] = data[clusterLeft];
+    output[cluster] = data[clusterLeft];
 
     if (cluster > 0) {
       clusterRight = clusterLeft - 1;

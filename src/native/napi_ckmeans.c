@@ -51,10 +51,9 @@ napi_value MyFunction(napi_env env, napi_callback_info info) {
         env, napi_float64_array, nClusters, output_buffer, byte_offset, &output_array));
 
     double* input_doubles = (double*)((uint8_t*)(data) + byte_offset);
-    double* output_doubles = (double*)(output_ptr);
+    double* output = (double*)(output_ptr);
 
-    size_t nClustersFinal[nClusters];
-    ckmeans(input_doubles, length, output_doubles, nClustersFinal, nClusters);
+    ckmeans(input_doubles, length, output, nClusters);
     return output_array;
 }
 
