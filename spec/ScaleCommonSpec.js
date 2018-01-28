@@ -33,7 +33,7 @@ describe('Scale', function () {
       .domain(DEFAULT_DOMAIN)
       .range(DEFAULT_RANGE);
     expect(scale.invertExtent('lol')).toEqual([NaN, NaN]);
-    });
+  });
 
   it('should return undefined if no domain or range has been defined', function () {
     expect(scale(100)).toEqual(undefined);
