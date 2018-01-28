@@ -23,15 +23,8 @@ function d3scaleCluster () {
     }
 
     var clusters = ckmeans(domain, Math.min(domain.length, range.length));
-<<<<<<< HEAD
-    isReady = clusters.length !== 0
-||||||| merged common ancestors
-    isReady = clusters.length !== 0
-    breakpoints = [];
-=======
     isReady = clusters.length !== 0;
     breakpoints = [];
->>>>>>> upstream/master
     for (var i = 0; i < clusters.length; i++) {
       // clusters might be a typed array
       breakpoints.push(clusters[i]);
