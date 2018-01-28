@@ -1,11 +1,11 @@
-const sinon = require('sinon')
-const ckmeansNative = require('../src/ckmeans-native')
-const d3scaleCluster = require('../src/index.js')
+var sinon = require('sinon')
+var ckmeansNative = require('../src/ckmeans-native')
+var d3scaleCluster = require('../src/index.js')
 describe('Scale', function () {
-  let DEFAULT_DOMAIN = [1, 2, 4, 5, 12, 43, 52, 123, 234, 1244]
-  let DEFAULT_RANGE = ['a', 'b', 'c', 'd', 'e', 'f']
-  let scale
-  let sandbox
+  var DEFAULT_DOMAIN = [1, 2, 4, 5, 12, 43, 52, 123, 234, 1244]
+  var DEFAULT_RANGE = ['a', 'b', 'c', 'd', 'e', 'f']
+  var scale
+  var sandbox
 
   beforeEach(function () {
     scale = d3scaleCluster()
@@ -61,7 +61,7 @@ describe('Scale', function () {
     sandbox.spy(ckmeansNative, 'ckmeans')
     const bigArray = new Array(1000)
 
-    for (let i = 0; i < 2000; i++) {
+    for (var i = 0; i < 2000; i++) {
       bigArray[i] = Math.random()
     }
     scale
