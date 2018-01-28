@@ -79,7 +79,6 @@ void fillMatrixColumn(size_t imin, size_t imax, size_t column, size_t nColumns, 
     double ssqj;
 
     for (size_t j = jhigh; j >= jlow; j--) {
-        // TODO ssq
         sji = ssq(j, i, sumX, sumXsq);
         if (sji + matrix[(column - 1)* nRows + jlow - 1] >= matrix[column * nRows + i]) {
             break;
@@ -95,7 +94,7 @@ void fillMatrixColumn(size_t imin, size_t imax, size_t column, size_t nColumns, 
             backtrackMatrix[column * nRows + i] = jlow;
         }
         jlow++;
-        ssqj = sji + matrix[(column - 1)  * nRows - 1 + j - 1];
+        ssqj = sji + matrix[(column - 1)  * nRows + j - 1];
         if (ssqj < matrix[column * nRows + i]) {
             matrix[column * nRows + i] = ssqj;
             backtrackMatrix[column * nRows + i] = j;
@@ -150,7 +149,7 @@ void ckmeans (double data[],size_t nValues, double output[], size_t nClusters) {
     size_t * backtrackMatrix = malloc(sizeMatrix * sizeof(size_t));
 
     size_t nRows = nValues;
-    for (size_t i = 0; i < nRows; i ++) {
+    for (size_t i = 0; i < nRows * nClusters; i ++) {
         matrix[i] = 0;
         backtrackMatrix[i] = 0;
     }

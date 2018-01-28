@@ -24,6 +24,8 @@ napi_value MyFunction(napi_env env, napi_callback_info info) {
 
     NAPI_ASSERT(env, valuetype1 == napi_number, "Wrong type of arguments. Expects number as second argument");
 
+    // TODO check not NaN
+    // TODO check > 1
     int nClusters;
     NAPI_CALL(env, napi_get_value_int32(env, args[1], &nClusters));
 
