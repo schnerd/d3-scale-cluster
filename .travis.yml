@@ -5,4 +5,4 @@ node_js:
   - "6"
   - "4"
 script:
-    -'if ["${TRAVIS_NODE_VERSION}" < 8]; then npm run test; else npm run test-node-modern; fi'
+    -'if [ "${TRAVIS_NODE_VERSION}" -lt 8 ]; then npm run test; else npm run test-node-modern; fi'
