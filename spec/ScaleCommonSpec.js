@@ -1,3 +1,4 @@
+/* globals describe, beforeEach, it, expect */
 var d3scaleCluster = require('../src/index.js')
 describe('Scale', function () {
   var DEFAULT_DOMAIN = [1, 2, 4, 5, 12, 43, 52, 123, 234, 1244]
