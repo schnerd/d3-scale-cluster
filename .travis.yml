@@ -1,5 +1,8 @@
 language: node_js
 node_js:
   - "node"
+  - "9"
   - "6"
   - "4"
+script:
+    -'if ["${TRAVIS_NODE_VERSION}" < 8]; then npm run test; else npm run test-node-modern; fi'
