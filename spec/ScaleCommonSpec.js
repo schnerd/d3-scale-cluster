@@ -1,20 +1,10 @@
-var sinon = require('sinon')
-var ckmeansNative = require('../src/ckmeans-native')
 var d3scaleCluster = require('../src/index.js')
 describe('Scale', function () {
   var DEFAULT_DOMAIN = [1, 2, 4, 5, 12, 43, 52, 123, 234, 1244]
   var DEFAULT_RANGE = ['a', 'b', 'c', 'd', 'e', 'f']
   var scale
-  var sandbox
-
   beforeEach(function () {
     scale = d3scaleCluster()
-  })
-  beforeEach(function () {
-    sandbox = sinon.sandbox.create()
-  })
-  afterEach(function () {
-    sandbox.restore()
   })
 
   it('should find clusters', function () {
@@ -56,18 +46,5 @@ describe('Scale', function () {
     var exported = scale.export()
     var newScale = d3scaleCluster().import(exported)
     expect(newScale(4)).toEqual('c')
-  })
-  it('It should call native api for big arrays', function () {
-    sandbox.spy(ckmeansNative, 'ckmeans')
-    const bigArray = new Array(1000)
-
-    for (var i = 0; i < 2000; i++) {
-      bigArray[i] = Math.random()
-    }
-    scale
-      .domain(bigArray)
-      .range(DEFAULT_RANGE)
-    expect(scale(0.1)).toEqual('a')
-    expect(ckmeansNative.ckmeans.called).toBe(true)
   })
 })

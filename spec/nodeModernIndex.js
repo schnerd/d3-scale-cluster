@@ -5,7 +5,7 @@ var jasmine = new Jasmine();
 jasmine.loadConfig({
 	spec_dir: 'spec',
 	spec_files: [
-		'**/*Common[sS]pec.js'
+		'**/*Common[sS]pec.js', '**/*NodeModern[sS]pec.js',
 	],
 	helpers: [
 		'helpers/**/*.js'

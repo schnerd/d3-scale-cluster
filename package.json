@@ -6,6 +6,7 @@
   "main": "src/index.js",
   "scripts": {
     "test": "npm run lint && node spec/index.js",
+    "test-node-modern": "npm run lint && node spec/nodeModernIndex.js",
     "build": "webpack",
     "lint": "eslint src/*",
     "bench": "node bench/index.js",
