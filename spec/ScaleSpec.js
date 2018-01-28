@@ -1,52 +1,73 @@
+const sinon = require('sinon')
+const ckmeansNative = require('../src/ckmeans-native')
+const d3scaleCluster = require('../src/index.js')
 describe('Scale', function () {
-  var d3scaleCluster = require('../src/index.js');
-
-  var DEFAULT_DOMAIN = [1, 2, 4, 5, 12, 43, 52, 123, 234, 1244];
-  var DEFAULT_RANGE = ['a', 'b', 'c', 'd', 'e', 'f'];
-  var scale;
+  let DEFAULT_DOMAIN = [1, 2, 4, 5, 12, 43, 52, 123, 234, 1244]
+  let DEFAULT_RANGE = ['a', 'b', 'c', 'd', 'e', 'f']
+  let scale
+  let sandbox
 
   beforeEach(function () {
-    scale = d3scaleCluster();
-  });
+    scale = d3scaleCluster()
+  })
+  beforeEach(function () {
+    sandbox = sinon.sandbox.create()
+  })
+  afterEach(function () {
+    sandbox.restore()
+  })
 
   it('should find clusters', function () {
     scale
       .domain(DEFAULT_DOMAIN)
-      .range(DEFAULT_RANGE);
+      .range(DEFAULT_RANGE)
 
-    var clusters = scale.clusters();
-    expect(clusters).toEqual([12, 43, 123, 234, 1244]);
-    expect(scale(52)).toEqual('c');
+    var clusters = scale.clusters()
+    expect(clusters).toEqual([12, 43, 123, 234, 1244])
+    expect(scale(52)).toEqual('c')
     var exported = scale.export()
     var newScale = d3scaleCluster().import(exported)
-    expect(newScale(52)).toEqual('c');
-  });
+    expect(newScale(52)).toEqual('c')
+  })
 
   it('should be able to invert extent', function () {
     scale
       .domain(DEFAULT_DOMAIN)
-      .range(DEFAULT_RANGE);
-    expect(scale.invertExtent('c')).toEqual([43, 123]); // Up to but not including 123
-  });
+      .range(DEFAULT_RANGE)
+    expect(scale.invertExtent('c')).toEqual([43, 123]) // Up to but not including 123
+  })
 
   it('should return NaNs inverting an invalid value', function () {
     scale
       .domain(DEFAULT_DOMAIN)
-      .range(DEFAULT_RANGE);
-    expect(scale.invertExtent('lol')).toEqual([NaN, NaN]);
-    });
+      .range(DEFAULT_RANGE)
+    expect(scale.invertExtent('lol')).toEqual([NaN, NaN])
+    })
 
   it('should return undefined if no domain or range has been defined', function () {
-    expect(scale(100)).toEqual(undefined);
-  });
+    expect(scale(100)).toEqual(undefined)
+  })
 
   it('should "gracefully" handle cases where range has more values than domain', function () {
     scale
       .domain([1, 2, 4])
-      .range(DEFAULT_RANGE);
-    expect(scale(4)).toEqual('c');
+      .range(DEFAULT_RANGE)
+    expect(scale(4)).toEqual('c')
     var exported = scale.export()
     var newScale = d3scaleCluster().import(exported)
-    expect(newScale(4)).toEqual('c');
-  });
-});
+    expect(newScale(4)).toEqual('c')
+  })
+  it('It should call native api for big arrays', function () {
+    sandbox.spy(ckmeansNative, 'ckmeans')
+    const bigArray = new Array(1000)
+
+    for (let i = 0; i < 2000; i++) {
+      bigArray[i] = Math.random()
+    }
+    scale
+      .domain(bigArray)
+      .range(DEFAULT_RANGE)
+    expect(scale(0.1)).toEqual('a')
+    expect(ckmeansNative.ckmeans.called).toBe(true)
+  })
+})

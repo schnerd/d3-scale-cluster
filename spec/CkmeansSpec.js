@@ -9,7 +9,7 @@ describe('Ckmeans', function () {
         data[j] = parseInt(Math.random() * 100)
       }
       const nClusters = parseInt(Math.random() * 10) + 2
-      const native = nativeCkMeans([...data], nClusters)
+      const native = nativeCkMeans.ckmeans([...data], nClusters)
       const js = jsCkMeans([...data], nClusters)
       expect(js).toEqual(Array.from(native), data, nClusters)
     }

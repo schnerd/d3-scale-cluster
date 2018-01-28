@@ -1,8 +1,8 @@
-const nativeCkmeans = require('bindings')('ckmeans')
+var nativeCkmeans = require('bindings')('ckmeans')
 function ckmeans (data, nClusters) {
-  const array = new Float64Array(data)
+  var array = new Float64Array(data)
 
   return nativeCkmeans.ckmeans(array, nClusters)
 }
 
-module.exports = ckmeans
+exports.ckmeans = ckmeans
