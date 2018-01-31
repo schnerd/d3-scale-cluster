@@ -40,7 +40,6 @@ size_t max_t (size_t a, size_t b) {
     }
     return b;
 }
-// TODO
 double ssq(size_t j, size_t i, double sumX[], double sumXsq[]) {
     double coeff = (double) (i - j + 1);
     double muji = (sumX[i] - sumX[j - 1]) / coeff;
