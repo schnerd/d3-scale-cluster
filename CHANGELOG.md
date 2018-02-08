@@ -1,5 +1,9 @@
 # Changelog
 
+### 1.3.1
+
+* Split ckmeans into its own package
+
 ### 1.3.0
 
 * Significant perf improvements in Node via NAPI (see #5, thanks @furstenheim)
