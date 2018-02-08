@@ -2,7 +2,7 @@
 const nativeCkMeans = require('../src/ckmeans-native');
 const jsCkMeans = require('../src/ckmeans');
 describe('Ckmeans', function () {
-  it('Test they return the same', function () {
+  it('should return same as non-native', function () {
     for (let i = 0; i < 30; i++) {
       const length = parseInt(Math.random() * 10 + 300);
       const data = [];
