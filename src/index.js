@@ -1,4 +1,4 @@
-var ckmeans = require('./ckmeans-triage');
+var ckmeans = require('ckmeans');
 
 function d3scaleCluster () {
   var isReady = false;
