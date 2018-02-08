@@ -1,8 +1,12 @@
 # Changelog
 
+### 1.3.0
+
+* Significant perf improvements in Node via NAPI (see #5, thanks @furstenheim)
+
 ### 1.2.0
 
-* Add helpers for computation in web worker (thanks @furstenheim-geoblink)
+* Add helpers for computation in web worker (thanks @furstenheim)
 
 ### 1.1.7
 
