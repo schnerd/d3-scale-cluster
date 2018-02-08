@@ -1,4 +1,4 @@
-var ckmeans = require('./ckmeans.js');
+var ckmeans = require('./ckmeans-triage');
 
 function d3scaleCluster () {
   var isReady = false;
@@ -26,7 +26,8 @@ function d3scaleCluster () {
     isReady = clusters.length !== 0;
     breakpoints = [];
     for (var i = 0; i < clusters.length; i++) {
-      breakpoints.push(clusters[i][0]);
+      // clusters might be a typed array
+      breakpoints.push(clusters[i]);
     }
   }
 

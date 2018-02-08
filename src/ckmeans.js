@@ -255,7 +255,7 @@ function ckmeans (data, nClusters) {
     // fill the cluster from the sorted input by taking a slice of the
     // array. the backtrack matrix makes this easy - it stores the
     // indexes where the cluster should start and end.
-    clusters[cluster] = sorted.slice(clusterLeft, clusterRight + 1);
+    clusters[cluster] = sorted[clusterLeft];
 
     if (cluster > 0) {
       clusterRight = clusterLeft - 1;

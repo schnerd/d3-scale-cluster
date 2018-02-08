@@ -11,6 +11,7 @@ var config = {
 		umdNamedDefine: true
 	},
 	plugins: [
+    new webpack.IgnorePlugin(/ckmeans-native/),
 		new webpack.optimize.UglifyJsPlugin()
 	]
 };
