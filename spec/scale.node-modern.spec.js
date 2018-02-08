@@ -18,16 +18,14 @@ describe('Napi ckmeans', function () {
     sandbox.restore();
   });
 
-  it('It should call native api for big arrays', function () {
+  it('should call native api for big arrays', function () {
     sandbox.spy(ckmeansNative, 'ckmeans');
     const bigArray = new Array(1000);
 
     for (var i = 0; i < 2000; i++) {
       bigArray[i] = Math.random();
     }
-    scale
-      .domain(bigArray)
-      .range(DEFAULT_RANGE);
+    scale.domain(bigArray).range(DEFAULT_RANGE);
     expect(scale(0.1)).toEqual('a');
     expect(ckmeansNative.ckmeans.called).toBe(true);
   });
