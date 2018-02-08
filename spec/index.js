@@ -4,7 +4,7 @@ var JasmineConsoleReporter = require('jasmine-console-reporter');
 var jasmine = new Jasmine();
 jasmine.loadConfig({
   spec_dir: 'spec',
-  spec_files: ['**/*.common.spec.js'],
+  spec_files: ['**/*.spec.js'],
   helpers: ['helpers/**/*.js'],
   stopSpecOnExpectationFailure: false,
   random: false
