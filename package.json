@@ -4,7 +4,9 @@
   "description": "D3 scale that clusters data into discrete groups",
   "repository": "schnerd/d3-scale-cluster",
   "main": "src/index.js",
-  "browser": "dist/d3-scale-cluster.min.js",
+  "browser": {
+    "./src/ckmeans-triage.js": "./src/ckmeans.js"
+  },
   "scripts": {
     "test": "npm run lint && node spec/index.js",
     "test-node-modern": "npm run lint && node spec/index.node-modern.js",
@@ -31,7 +33,7 @@
     "jasmine": "^2.5.1",
     "jasmine-console-reporter": "^1.2.7",
     "sinon": "^4.2.2",
-    "webpack": "^1.13.2"
+    "webpack": "^3.10.0"
   },
   "gypfile": true
 }
