@@ -7,7 +7,7 @@ export default [
   {
     input: 'src/index.js',
     output: {
-      name: 'd3-scale-cluster',
+      name: 'd3scaleCluster',
       file: pkg.browser,
       format: 'umd',
     },
