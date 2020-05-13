@@ -10,6 +10,8 @@ Clusters are computed using a 1-dimensional clustering algorithm with an `O(kn l
 
 For more details on this project and the underlying clustering algorithm, please read this blog post on Medium: ["Using clustering to create a new D3.js color scale"](https://medium.com/@dschnr/using-clustering-to-create-a-new-d3-js-color-scale-dec4ccd639d2)
 
+For more direct access to the ckmeans algorithm (not as a D3 scale), check out [ckmeans](https://www.npmjs.com/package/ckmeans) or its native sibling [ckmeans-native](https://www.npmjs.com/package/ckmeans-native).
+
 ### Getting Started
 
 ##### Using npm
@@ -43,14 +45,16 @@ Reference the scale directly from the d3 object
 ```es6
 var scale = d3.scaleCluster();
 ```
+
 ### Example Usage
 
 This scale largely has the same API as [d3.scaleQuantile](https://github.com/d3/d3-scale/blob/master/README.md#scaleQuantile) (however we use `clusters()` instead of `quantiles()`)
 
 ```js
-var scale = d3.scaleCluster()
-    .domain([1, 2, 4, 5, 12, 43, 52, 123, 234, 1244])
-    .range(['#E5D6EA', '#C798D3', '#9E58AF', '#7F3391', '#581F66', '#30003A']);
+var scale = d3
+  .scaleCluster()
+  .domain([1, 2, 4, 5, 12, 43, 52, 123, 234, 1244])
+  .range(['#E5D6EA', '#C798D3', '#9E58AF', '#7F3391', '#581F66', '#30003A']);
 
 var clusters = scale.clusters(); // [12, 43, 123, 234, 1244]
 var color = scale(52); // '#9E58AF'
@@ -110,7 +114,7 @@ self.postMessage({scale: scale.export()});
 
 ```js
 worker.onmessage = function (event) {
-    const scale = scaleCluster().import(event.data.scale)
+  const scale = scaleCluster().import(event.data.scale);
 };
 ```
 
@@ -129,8 +133,7 @@ Thanks to Haizhou Wang and Mingzhou Song for developing the original [Ckmeans 1D
 ```
 npm install
 npm run test  # run tests
-npm run test-node-modern  # run tests (with ckmeans native)
-npm run build # build distributable file for browser
+npm run build # build distributable file
 ```
 
 ### Publishing
