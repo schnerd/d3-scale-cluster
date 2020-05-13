@@ -5,7 +5,9 @@
   "repository": "schnerd/d3-scale-cluster",
   "author": "David Schnurr",
   "license": "MIT",
-  "main": "src/index.js",
+  "main": "dist/d3-scale-cluster.cjs.js",
+  "module": "dist/d3-scale-cluster.esm.js",
+  "browser": "dist/d3-scale-cluster.umd.js",
   "scripts": {
     "test": "npm run lint && npm run jest",
     "jest": "jest",
