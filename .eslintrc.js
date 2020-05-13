@@ -1,9 +1,19 @@
 module.exports = {
-  extends: 'standard',
-  rules: {
-    semi: ['error', 'always']
+  env: {
+    browser: true,
+    commonjs: true,
+    es6: true,
+    node: true,
+    'jest/globals': true,
   },
+  extends: ['standard', 'plugin:prettier/recommended'],
+  plugins: ['jest'],
   globals: {
-    d3: true
-  }
+    Atomics: 'readonly',
+    SharedArrayBuffer: 'readonly',
+  },
+  parserOptions: {
+    ecmaVersion: 2015,
+  },
+  rules: {},
 };

@@ -1,6 +1,6 @@
 var ckmeans = require('ckmeans');
 
-function d3scaleCluster () {
+function d3scaleCluster() {
   var isReady = false;
   var domain = [];
   var range = [];
@@ -17,7 +17,7 @@ function d3scaleCluster () {
     return range[0];
   };
 
-  function rescale () {
+  function rescale() {
     if (range.length <= 2) {
       return;
     }
@@ -78,7 +78,7 @@ function d3scaleCluster () {
       isReady: isReady,
       domain: domain,
       range: range,
-      breakpoints: breakpoints
+      breakpoints: breakpoints,
     };
   };
 
@@ -101,6 +101,7 @@ function d3scaleCluster () {
 }
 
 if (typeof d3 === 'object') {
+  // eslint-disable-next-line no-undef
   d3.scaleCluster = d3scaleCluster;
 }
 
