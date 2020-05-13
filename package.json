@@ -1,6 +1,6 @@
 {
   "name": "d3-scale-cluster",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "D3 scale that clusters data into discrete groups",
   "repository": "schnerd/d3-scale-cluster",
   "author": "David Schnurr",
